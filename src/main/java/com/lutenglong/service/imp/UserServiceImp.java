@@ -1,10 +1,14 @@
 package com.lutenglong.service.imp;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.lutenglong.bean.Category;
+import com.lutenglong.bean.Channel;
 import com.lutenglong.bean.User;
 import com.lutenglong.mapper.UserMapper;
 import com.lutenglong.service.UserService;
@@ -31,5 +35,11 @@ public class UserServiceImp implements UserService {
 	public User findAUser(User user) {
 		user.setPassWord(CmsUtils.encry(user.getPassWord(), user.getUserName()));
 		return userMapper.findAUser(user);
+	}
+
+	@Override
+	public List<Channel> getChannels() {
+		// TODO Auto-generated method stub
+		return userMapper.getChannels();
 	}
 }

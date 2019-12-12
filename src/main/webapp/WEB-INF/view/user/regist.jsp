@@ -10,7 +10,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>注册</title>
 <script type="text/javascript" src="<%=path%>/webResources/js/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" src="<%=path%>/webResources/My97DatePicker/WdatePicker.js"></script>
 <%-- <link href="<%=path%>/webResources/css/index3.css"  rel="stylesheet"> --%>

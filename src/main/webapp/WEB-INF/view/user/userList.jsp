@@ -10,7 +10,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>个人中心</title>
+<title>首页</title>
 <script type="text/javascript" src="<%=path%>/webResources/js/jquery-3.4.1.min.js"></script>
 <script type="text/javascript" src="<%=path%>/webResources/My97DatePicker/WdatePicker.js"></script>
 <%-- <link href="<%=path%>/webResources/css/index3.css"  rel="stylesheet"> --%>
@@ -80,13 +80,13 @@
 		 			
 		</nav>
 					
-					<!-- 卡片 -->
+	<!-- 卡片 -->
 					<div >
 					<div class="card div-inline wh" style="width: 18rem;;">
 						  <div class="card-body">
-								    <h5 class="card-title">进入主页</h5>
+								    <h5 class="card-title">个人中心</h5>						<!-- 前往个人中心 -->
 								    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-								    <a href="/channel/goHome.do?id=${user.id }" class="btn btn-primary">Let's Go</a>
+								    <a href="/user/getAUser.do?userName=${user.userName } "class="btn btn-primary">Let's Go</a>
 								  </div>
 						</div>
 						<div class="card div-inline wh" style="width: 18rem;;">
@@ -126,37 +126,102 @@
 						</div>
 					</div>
 					
-					
-					<!-- 左侧导航栏 -->
-					<div class="row" style="margin: 30px 10px;width: 300px auto; ">
-						  <div class="col-1" style="border-right: 20px;border-right-color: black;border-right-width: 2px;border-right-style:dotted;height: 620px;">
-							    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-							      <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">我的文章</a>
-							      <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">我的评论</a>
-							      <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">发表文章</a>
-							      <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">个人设置</a>
-						    </div>
-						  </div>
-						    <div class="col-10">
-						      <div class="tab-content" id="content" style="margin-left: 30px;width: 1500px;">
-						      		
-						      </div>
-						      </div>
-						  
-					</div>
-					
-					
-					
-					
-					
-					
-					
-					<div class="bg-dark" style="width: 300px auto;height: 100px;margin-top: 30px">
+			
+			
+			<!-- 左侧导航栏 -->
+	<div class="row ">
+		  <div class="col-1 " style="border-right: 20px;border-right-color: black;border-right-width: 2px;border-right-style:dotted;margin-top: 30px;height: 620px;margin-left: 25px;;">
+			    <div class="nav flex-column nav-pills " id="v-pills-tab" role="tablist" aria-orientation="vertical" style="margin-top: 50px;">
+			    	<c:forEach items="${list }" var="channel">
+						<c:choose>
+							<c:when test="${channel.id==1 }">
+									<a class="nav-link active"  id="v-pills-${channel.name }-tab" data-toggle="pill" href="#v-pills-${channel.name }" role="tab" aria-controls="v-pills-${channel.name }" aria-selected="false" onclick="category(${channel.id})">${channel.name }</a>
+							</c:when>
+							<c:otherwise>
+									<a class="nav-link"  id="v-pills-${channel.name }-tab" data-toggle="pill" href="#v-pills-${channel.name }" role="tab" aria-controls="v-pills-${channel.name }" aria-selected="false" onclick="category(${channel.id})">${channel.name }</a>
+							</c:otherwise>
+						</c:choose>
+			    	</c:forEach>
+			    </div>
+		  </div>
+		  <div class="col-10">
+			    <div class="tab-content" id="v-pills-tabContent">
+			    		<c:forEach items="${list }" var="channel">
+			    			<c:choose>
+			    				<c:when test="${channel.id==1 }">
+			    						<div class="tab-pane fade show active" id="v-pills-${channel.name }" role="tabpanel" aria-labelledby="v-pills-${channel.name }-tab" style="margin-top:30px;width: 200px auto;height: 620px;">
+				     				<!-- 内部导航栏 -->
+				     				<nav>
+									  <div class="nav nav-tabs uu uu2" id="nav-tab" role="tablist"  >
+									    
+									  </div>
+									</nav>
+				     					</div>
+			    				</c:when>
+			    				<c:otherwise>
+				    					  <div class="tab-pane fade show " id="v-pills-${channel.name }" role="tabpanel" aria-labelledby="v-pills-${channel.name }-tab" style="margin-top:30px;width: 200px auto;height: 620px;">
+							     				<!-- 内部导航栏 -->
+							     						<nav>
+															  <div class="nav nav-tabs uu" id="nav-tab" role="tablist">
+															  </div>
+														</nav>
+					     				</div>
+			    				</c:otherwise>
+			    			</c:choose>
+			     		</c:forEach>
+			     		
+			     		<div class="tab-content" id="content" style="width: 300px auto;height: 580px;margin-top: -580px;'">
+																
+						</div>
+			    </div>
+		  </div>
+	</div>
+	
+	
+	
+			  			<div class="bg-dark" style="width: 300px auto;height: 100px;margin-top: 30px">
 	  					
 	  				</div>
 </body>
 <script type="text/javascript">
-	var id='${user.id}'
-	$("#content").load("/channel/getArticleOfUser.do?id="+id);
+ $.post("<%=path %>/channel/category.do",{id:1},function(arr){
+	  for(var i in arr){
+		  if(i==0){
+				$(".uu2").append("<a class=\"nav-item nav-link\" id=\"nav-"+arr[i].name+"-tab\" data-toggle=\"tab\" href=\"#nav-"+arr[i].name+"\" role=\"tab\" aria-controls=\"nav-"+arr[i].name+"\" aria-selected=\"false\" onclick=\"list("+arr[i].id+")\">"+arr[i].name+"</a>");
+		  }else{
+				$(".uu2").append("<a class=\"nav-item nav-link\" id=\"nav-"+arr[i].name+"-tab\" data-toggle=\"tab\" href=\"#nav-"+arr[i].name+"\" role=\"tab\" aria-controls=\"nav-"+arr[i].name+"\" aria-selected=\"false\" onclick=\"list("+arr[i].id+")\">"+arr[i].name+"</a>");
+		  }
+	  }
+	  $("#content").load("/channel/getAllArticle.do?id="+1);
+})
+
+
+
+
+	function category(id){
+		$(".uu").each(function(){
+			$(this).empty();
+		})
+		$.post("<%=path %>/channel/category.do",{id:id},function(arr){
+			  for(var i in arr){
+				  if(i==0){
+						$(".uu").each(function(){
+							$(this).append("<a class=\"nav-item nav-link\" id=\"nav-"+arr[i].name+"-tab\" data-toggle=\"tab\" href=\"#nav-"+arr[i].name+"\" role=\"tab\" aria-controls=\"nav-"+arr[i].name+"\" aria-selected=\"false\" onclick=\"list("+arr[i].id+")\">"+arr[i].name+"</a>");
+						})
+				  }else{
+					  $(".uu").each(function(){
+							$(this).append("<a class=\"nav-item nav-link\" id=\"nav-"+arr[i].name+"-tab\" data-toggle=\"tab\" href=\"#nav-"+arr[i].name+"\" role=\"tab\" aria-controls=\"nav-"+arr[i].name+"\" aria-selected=\"false\" onclick=\"list("+arr[i].id+")\">"+arr[i].name+"</a>");
+						})
+				  }
+			  }
+		})
+		$("#content").load("/channel/getAllArticle.do?id="+id);
+		
+	}
+ 
+ 
+ function list(id){
+		 $("#content").load("/channel/getArticleOfCategory.do?id="+id);
+ }
 </script>
 </html>

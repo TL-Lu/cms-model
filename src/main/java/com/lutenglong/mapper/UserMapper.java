@@ -1,10 +1,13 @@
 package com.lutenglong.mapper;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 
+import com.lutenglong.bean.Channel;
 import com.lutenglong.bean.User;
 
 public interface UserMapper {
@@ -19,5 +22,8 @@ public interface UserMapper {
 	@Select("select id,username,password passWord,nickname nickName,birthday,CONCAT(gender),locked,create_time createTime,update_time updateTime,url,score,role "
 			+ "from cms_user where username=#{userName} and password=#{passWord}")
 	User findAUser(User user);
+
+	@Select("select id,name,description from cms_channel")
+	List<Channel> getChannels();
 
 }
