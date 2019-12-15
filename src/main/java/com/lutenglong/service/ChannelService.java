@@ -17,5 +17,13 @@ public interface ChannelService {
 	List<Article> getArticleOfUser(String id);
 
 	User findUserOfHome(String id);
+
+	boolean delArticle(String id);
+
+	int add(Article article);
+
+	Article toUpdateArticle(String id);
+
+	int update(Article article);
 	
 }

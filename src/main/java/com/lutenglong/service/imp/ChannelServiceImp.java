@@ -45,4 +45,33 @@ public class ChannelServiceImp implements ChannelService {
 			// TODO Auto-generated method stub
 			return channelMapper.findUserOfHome(id);
 		}
+
+		@Override
+		public boolean delArticle(String id) {
+			try {
+				channelMapper.delArticle(id);
+				return true;
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return false;
+			}
+		
+		}
+
+		@Override
+		public int add(Article article) {
+			return channelMapper.add(article);
+		}
+
+		@Override
+		public Article toUpdateArticle(String id) {
+			// TODO Auto-generated method stub
+			return channelMapper.toUpdateArticle(id);
+		}
+
+		@Override
+		public int update(Article article) {
+			return channelMapper.update(article);
+		}
 }

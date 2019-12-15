@@ -17,6 +17,12 @@
 <link href="<%=path%>/webResources/bootstrap-4.3.1-dist/css/bootstrap.css"  rel="stylesheet">
 <script type="text/javascript" src="<%=path %>/webResources/bootstrap-4.3.1-dist/js/bootstrap.js"></script>
 <script type="text/javascript" src="<%=path %>/webResources/validate/jquery.validate.js"></script>
+
+<link rel="stylesheet" href="<%=path %>/webResources/kindeditor/themes/default/default.css" />
+	<link rel="stylesheet" href="<%=path %>/webResources/kindeditor/plugins/code/prettify.css" />
+	<script charset="utf-8" src="<%=path %>/webResources/kindeditor/plugins/code/prettify.js"></script>
+	<script charset="utf-8" src="<%=path %>/webResources/kindeditor/kindeditor-all.js"></script>
+    <script charset="utf-8" src="<%=path %>/webResources/kindeditor/lang/zh-CN.js"></script>
 </head>
 <style>
     *{margin: 0;padding: 0;}
@@ -130,10 +136,10 @@
 					<!-- 左侧导航栏 -->
 					<div class="row" style="margin: 30px 10px;width: 300px auto; ">
 						  <div class="col-1" style="border-right: 20px;border-right-color: black;border-right-width: 2px;border-right-style:dotted;height: 620px;">
-							    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-							      <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">我的文章</a>
+							    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="margin-top: 50px;">
+							      <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true" onclick="myArticle()">我的文章</a>
 							      <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">我的评论</a>
-							      <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">发表文章</a>
+							      <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false" onclick="toAddArticle()">发表文章</a>
 							      <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">个人设置</a>
 						    </div>
 						  </div>
@@ -156,7 +162,40 @@
 	  				</div>
 </body>
 <script type="text/javascript">
+
+	 KindEditor.ready(function(K) {
+			window.editor1 = K.create();
+			prettyPrint();
+		});
+
 	var id='${user.id}'
 	$("#content").load("/channel/getArticleOfUser.do?id="+id);
+	
+	function myArticle(){
+		var id='${user.id}'
+		$("#content").load("/channel/getArticleOfUser.do?id="+id);
+	}
+	
+	
+	function del(id){
+		if(!confirm("确定删除吗?")){
+			return;
+		}
+		$.post('/channel/delArticle.do',{id:id},function(result){
+				if(result){
+					alert("删除成功")
+					location.reload();
+				}else{
+					alert("删除失败")
+				}
+		})
+	}
+	function upd(id){
+		$("#content").load("/channel/toUpdateArticle.do?id="+id);
+	}
+	
+	function toAddArticle(){
+		$("#content").load("/channel/toAddArticle.do");
+	}
 </script>
 </html>

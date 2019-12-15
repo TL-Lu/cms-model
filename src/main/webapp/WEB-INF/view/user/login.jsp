@@ -90,8 +90,6 @@
 							    	<form:button class="btn btn-dark "  style="margin-left: 63px;margin-top: 30px">Login</form:button>
 	  						</form:form>
 	  				</div>
-	  				
-	  				
 	  						<div class="bg-dark" style="width: 300px auto;height: 304px;">
 	  					
 	  				</div>
