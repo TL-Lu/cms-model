@@ -44,6 +44,13 @@ public class ChannelController {
 	
 	public static String picture;
 	
+	/**
+	 *		返回某个栏目的分类
+	 *
+	 * @param m
+	 * @param id
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("category.do")
 	public Object category(Model m,String id) {
@@ -52,6 +59,13 @@ public class ChannelController {
 	}
 
 	
+	/**
+	 * 		获取栏目下的所有文章
+	 * @param m
+	 * @param id
+	 * @param currentPage
+	 * @return
+	 */
 	@RequestMapping("getAllArticle.do")
 	public Object getAllArticle(Model m,String id,@RequestParam(defaultValue = "1")Integer currentPage) {
 		PageHelper.startPage(currentPage,6);
@@ -62,6 +76,14 @@ public class ChannelController {
 		return "user/allList";
 	}
 	
+	/**
+	 * 
+	 * 获取分类下的所有文章
+	 * @param m
+	 * @param id
+	 * @param currentPage
+	 * @return
+	 */
 	@RequestMapping("getArticleOfCategory.do")
 	public Object getArticleOfCategory(Model m,String id,@RequestParam(defaultValue = "1")Integer currentPage) {
 		PageHelper.startPage(currentPage,6);
@@ -71,6 +93,14 @@ public class ChannelController {
 		m.addAttribute("articles", articles);
 		return "user/list";
 	}
+	
+	/**
+	 * 根据栏目获取文章
+	 * @param m
+	 * @param id
+	 * @param currentPage
+	 * @return
+	 */
 	@RequestMapping("getArticleOfChannel.do")
 	public Object getArticleOfChannel(Model m,String id,@RequestParam(defaultValue = "1")Integer currentPage) {
 		PageHelper.startPage(currentPage,6);
@@ -81,6 +111,13 @@ public class ChannelController {
 		return "user/article/allList";
 	}
 	
+	/**
+	 *  获取用户发布的文章
+	 * @param m
+	 * @param id
+	 * @param currentPage
+	 * @return
+	 */
 	@RequestMapping("getArticleOfUser.do")
 	public Object getArticleOfUser(Model m,String id,@RequestParam(defaultValue = "1")Integer currentPage) {
 		PageHelper.startPage(currentPage,8);
@@ -93,6 +130,12 @@ public class ChannelController {
 		return "user/article/myList";
 	}
 	
+	/**
+	 * 跳转到主页
+	 * @param m
+	 * @param id
+	 * @return
+	 */
 	@RequestMapping("goHome.do")
 	public Object goHome(Model m,String id) {
 		List<Channel> list = userService.getChannels();
@@ -107,6 +150,12 @@ public class ChannelController {
 		
 		return "user/userList";
 	}
+	
+	/**
+	 * 添加文章
+	 * @param m
+	 * @return
+	 */
 	@RequestMapping("toAddArticle.do")
 	public Object toAddArticle(Model m) {
 		List<Channel> list = userService.getChannels();
@@ -114,6 +163,13 @@ public class ChannelController {
 		return "user/article/addArticle";
 	}
 	
+	/**
+	 * 跳转到修改文章界面
+	 * @param m
+	 * @param id
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping("toUpdateArticle.do")
 	public Object toUpdateArticle(Model m,String id,HttpServletRequest request) {
 		User loginUser = (User) request.getSession().getAttribute(CmsContent.User_Key);
@@ -130,6 +186,13 @@ public class ChannelController {
 		return "user/article/updateArticle";
 	}
 	
+	
+	/**
+	 *  删除文章
+	 * @param m
+	 * @param id
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("delArticle.do")
 	public Object delArticle(Model m,String id) {
@@ -137,6 +200,14 @@ public class ChannelController {
 		return flag;
 	}
 	
+	
+	
+	/**
+	 * 查询所有文章
+	 * @param m
+	 * @param currentPage
+	 * @return
+	 */
 	@RequestMapping("findAllArticle.do")
 	public Object findAllArticle(Model m,@RequestParam(defaultValue = "1")Integer currentPage) {
 		PageHelper.startPage(currentPage,8);
@@ -147,6 +218,14 @@ public class ChannelController {
 		return "root/article/myList";
 	}
 	
+	
+	
+	/**
+	 *  根据主键获取一篇文章
+	 * @param m
+	 * @param id
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("getArticle.do")
 	public Object getArticle(Model m,String id) {
@@ -173,6 +252,15 @@ public class ChannelController {
 			return new ArticleMessage(MessageCommen.N,"文章不存在",null);
 	}
 	
+	
+	
+	/**
+	 * 设置审核状态
+	 * @param m
+	 * @param id
+	 * @param status
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("setStatus.do")
 	public Object setStatus(Model m,String id,Integer status) {
@@ -189,6 +277,14 @@ public class ChannelController {
 		}
 		
 	}
+	
+	/**
+	 * 设置是否热门
+	 * @param m
+	 * @param id
+	 * @param hot
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("setHot.do")
 	public Object setHot(Model m,String id,String hot) {
@@ -204,6 +300,15 @@ public class ChannelController {
 			return  new ArticleMessage(MessageCommen.N, "操作失败", null);
 		}
 	}
+	
+	
+	
+	/**
+	 * 获取热门文章
+	 * @param m
+	 * @param currentPage
+	 * @return
+	 */
 	@RequestMapping("getHotArticle.do")
 	public String getHotArticle(Model m,@RequestParam(defaultValue = "1")Integer currentPage) {
 		PageHelper.startPage(currentPage,4);
@@ -216,6 +321,15 @@ public class ChannelController {
 		return "user/article/hotList";
 	}
 	
+	
+	
+	/**
+	 * 获取评论
+	 * @param m
+	 * @param currentPage
+	 * @param id
+	 * @return
+	 */
 	@RequestMapping("comments.do")
 	public Object comments(Model m,@RequestParam(defaultValue = "1")Integer currentPage,String id) {
 		PageInfo<Comment> commentPage =  channelService.getComments(id,currentPage);
@@ -224,6 +338,8 @@ public class ChannelController {
 	}
 	
 	/**
+	 * 
+	 * 文章详情
 	 * @param m
 	 * @param id
 	 * @return
@@ -237,7 +353,14 @@ public class ChannelController {
 		return "user/article/details";
 	}
 	
-	
+	/**
+	 * 添加评论
+	 * @param m
+	 * @param articleId
+	 * @param content
+	 * @param request
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("addComment.do")
 	public Object addComment(Model m,Integer articleId,String content,HttpServletRequest request) {
