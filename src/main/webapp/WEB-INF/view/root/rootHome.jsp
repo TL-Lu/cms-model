@@ -70,7 +70,16 @@
 			  </div>
 		 			<ul class="row" style="margin-right: 30px;">
 		 				<li class="nav-link" style="height: 30px"><img alt="" src="/webResources/img/1.jpg" width="30px;" height="30ps;"></li>
-		 				<li class="nav-link" style="height: 30px"><span style="color: white;">用户：${user.userName }</span></li>
+		 				
+		 					<c:choose>
+		 					<c:when test="${user.userName!=''&&user.userName!=null}">
+		 						<li class="nav-link" style="height: 30px"><span style="color: white;">用户：${user.userName }</span></li>
+		 						
+		 					</c:when>
+		 					<c:otherwise>
+		 							<li class="nav-link" style="height: 30px"><span style="color: white;"><button onclick="script:location='/user/toLogin.do'" type="button" class="btn btn-info" style="margin-top: -5px;">登录</button></span></li>
+		 					</c:otherwise>
+		 					</c:choose>
 		 				<li class="nav-link" style="height: 30px;">
 										
 								<div class="btn-group" style="margin-right: 30px;">
@@ -145,10 +154,10 @@
 					<div class="row" style="margin: 30px 10px;width: 300px auto; ">
 						  <div class="col-1" style="border-right: 20px;border-right-color: black;border-right-width: 2px;border-right-style:dotted;height: 620px;">
 							    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="margin-top: 50px;">
-							      <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true" onclick="myArticle()">我的文章</a>
-							      <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">我的评论</a>
-							      <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false" onclick="toAddArticle()">发表文章</a>
-							      <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">个人设置</a>
+							      <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true" onclick="allArticle()">文章管理</a>
+							      <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">评论管理</a>
+							      <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false" onclick="toAddArticle()">链接管理</a>
+							      <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">用户管理</a>
 						    </div>
 						  </div>
 						    <div class="col-10">
@@ -176,12 +185,11 @@
 			prettyPrint();
 		});
 
-	var id='${user.id}'
-	$("#content").load("/channel/getArticleOfUser.do?id="+id);
+	$("#content").load("/channel/findAllArticle.do");
 	
-	function myArticle(){
+	function allArticle(){
 		var id='${user.id}'
-		$("#content").load("/channel/getArticleOfUser.do?id="+id);
+		$("#content").load("/channel/findAllArticle.do");
 	}
 	
 	
@@ -205,5 +213,6 @@
 	function toAddArticle(){
 		$("#content").load("/channel/toAddArticle.do");
 	}
+
 </script>
 </html>

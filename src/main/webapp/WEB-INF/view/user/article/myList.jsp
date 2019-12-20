@@ -8,8 +8,11 @@
 			    <tr>
 				      <th scope="col">文章编号</th>
 				      <th scope="col">文章标题</th>
+				      <th scope="col">栏目</th>
+				      <th scope="col">分类</th>
 				      <th scope="col">创建时间</th>
 				      <th scope="col">状态</th>
+				      <th scope="col">是否热门</th>
 				      <th scope="col">操作</th>
 			    </tr>
 		  </thead>
@@ -18,6 +21,8 @@
 			    <tr>
 				      <th scope="row">${article.id }</th>
 				      <td>${article.title }</td>
+				      <td>${article.channel.name }</td>
+				      <td>${article.category.name }</td>
 				      <td><fmt:formatDate value="${article.created }"/> </td>
 				      <td>
 				      		<c:if test="${article.status==0}" >
@@ -30,6 +35,7 @@
 				      			<span style="color: red;">审核被拒</span>
 				      		</c:if>
 				      </td>
+				      <td>${article.hot=='1'?'是':'否' }</td>
 				      <td>
 				      <button type="button" class="btn btn-danger" onclick="del(${article.id })">删除</button>
 				      	<button type="button" class="btn btn-info" onclick="upd(${article.id})">修改</button>

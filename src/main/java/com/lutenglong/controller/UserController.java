@@ -46,17 +46,36 @@ public class UserController {
 	@Autowired
 	private ChannelService channelService;
 	
+	/**
+	 * 
+	 * @param m
+	 * @return
+	 */
 	@RequestMapping("toLogin.do")
 	public String toLogin(Model m ) {
 		m.addAttribute("user", new User());
 		return "user/login";
 	}
+	
+	/**
+	 * 
+	 * @param m
+	 * @return
+	 */
 	@RequestMapping("toRegist.do")
 	public String toRegist(Model m ) { 
 		m.addAttribute("user", new User());
 		return "user/regist";
 	}
 	
+	
+	/**
+	 * 注册
+	 * @param m
+	 * @param user
+	 * @param result
+	 * @return
+	 */
 	@RequestMapping("regist.do")
 	public String regist(Model m,@Valid @ModelAttribute("user")User user,BindingResult result) {
 		if (result.hasErrors()) {
@@ -66,6 +85,12 @@ public class UserController {
 		return "redirect:toLogin.do";
 	}
 	
+	/**
+	 * 根据用户名获取User
+	 * @param m
+	 * @param userName
+	 * @return
+	 */
 	@RequestMapping("getAUser.do")
 	public String getAUser(Model m,String userName) {
 			User checkName = userService.checkName(userName);
@@ -74,21 +99,36 @@ public class UserController {
 	}
 	
 	
-
+	@RequestMapping("logout.do")
+	public String logout(Model m,HttpServletRequest request) {
+		request.getSession().removeAttribute(CmsContent.User_Key);
+		return "redirect:/channel/goHome.do";
+	}
 	
+
+	/**
+	 * 登录 判断是否用户或者管理员
+	 * @param m
+	 * @param user
+	 * @param request
+	 * @return
+	 */
 	
 	@RequestMapping("login.do")
 	public String login(Model m,User user,HttpServletRequest request) {
 		User user2 = userService.findAUser(user);
+		request.getSession().setAttribute(CmsContent.User_Key,user2);
 		if(user2!=null) {
-			request.getSession().setAttribute(CmsContent.User_Key,user2);
 			if(user2.getRole()==0) {
 				List<Channel> list = userService.getChannels();
 				m.addAttribute("user", user2);
 				m.addAttribute("list", list);
-				return "user/userList";
+				return "redirect:/channel/goHome.do?id="+user2.getId();
 			}else {
-				return "user/rootList";
+				List<Channel> list = userService.getChannels();
+				m.addAttribute("user", user2);
+				m.addAttribute("list", list);
+				return "redirect:/channel/goHome.do?id="+user2.getId();
 			}
 		}else {
 			m.addAttribute("err", "账号或密码错误");
@@ -96,6 +136,23 @@ public class UserController {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param m
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("goRootHome.do")
+	public String goRootHome(Model m,String id) {
+		User user = channelService.findUserOfHome(id);
+		List<Channel> list = userService.getChannels();
+		m.addAttribute("user", user);
+		m.addAttribute("list", list);
+		if(user.getRole()==1) {
+			return "root/rootHome";
+		}
+		return "redirect:/channel/goHome.do?id="+user.getId();
+	}
 	
 	@RequestMapping("checkName.do")
 	@ResponseBody
@@ -189,4 +246,6 @@ public class UserController {
 			return  subPath + "/" + fileName;
 	
 	}
+	
+	
 }
