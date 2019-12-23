@@ -1,16 +1,22 @@
 package com.lutenglong.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -19,8 +25,10 @@ import com.lutenglong.bean.ArticleMessage;
 import com.lutenglong.bean.Category;
 import com.lutenglong.bean.Channel;
 import com.lutenglong.bean.Comment;
+import com.lutenglong.bean.Complain;
 import com.lutenglong.bean.Picture;
 import com.lutenglong.bean.User;
+import com.lutenglong.cms.util.StringUtil;
 import com.lutenglong.commen.CmsContent;
 import com.lutenglong.commen.MessageCommen;
 import com.lutenglong.service.ChannelService;
@@ -28,7 +36,7 @@ import com.lutenglong.service.UserService;
 
 @Controller
 @RequestMapping("channel")
-public class ChannelController {
+public class ChannelController  extends BaseController{
 	
 	@Value("${upload.path}")
 	String picRoot;
@@ -119,13 +127,14 @@ public class ChannelController {
 	 * @return
 	 */
 	@RequestMapping("getArticleOfUser.do")
-	public Object getArticleOfUser(Model m,String id,@RequestParam(defaultValue = "1")Integer currentPage) {
+	public Object getArticleOfUser(Model m,String id,@RequestParam(defaultValue = "1")Integer currentPage,String status) {
 		PageHelper.startPage(currentPage,8);
-		List<Article> articles = channelService.getArticleOfUser(id);
+		List<Article> articles = channelService.getArticleOfUser(id,status);
 		PageInfo<Article> page = new PageInfo<Article>(articles);
 		m.addAttribute("page", page);
 		m.addAttribute("articles", articles);
 		m.addAttribute("userId", id);
+		m.addAttribute("status", status);
 		
 		return "user/article/myList";
 	}
@@ -209,12 +218,13 @@ public class ChannelController {
 	 * @return
 	 */
 	@RequestMapping("findAllArticle.do")
-	public Object findAllArticle(Model m,@RequestParam(defaultValue = "1")Integer currentPage) {
+	public Object findAllArticle(Model m,@RequestParam(defaultValue = "1")Integer currentPage,String status) {
 		PageHelper.startPage(currentPage,8);
-		List<Article> articles = channelService.getArticles();
+		List<Article> articles = channelService.findAllArticle(status);
 		PageInfo<Article> page = new PageInfo<Article>(articles);
 		m.addAttribute("articles", articles);
 		m.addAttribute("page", page);
+		m.addAttribute("status", status);
 		return "root/article/myList";
 	}
 	
@@ -353,6 +363,8 @@ public class ChannelController {
 		return "user/article/details";
 	}
 	
+	
+	
 	/**
 	 * 添加评论
 	 * @param m
@@ -380,6 +392,53 @@ public class ChannelController {
 			return new ArticleMessage(MessageCommen.Y, "", comment);
 		}
 		return new ArticleMessage(MessageCommen.N, "评论失败", null);
+	}
+	
+	
+	
+	@RequestMapping("complain.do")
+	public Object complain(Model m,String id) {
+		Article article = channelService.getArticle(id);
+		System.out.println(id);
+		m.addAttribute("article", article);
+		m.addAttribute("complain", new Complain());
+		return "user/article/complain";
+	}
+	
+	
+	@RequestMapping(value="addComplain.do",method=RequestMethod.POST)
+	public String addComplain(HttpServletRequest request,@ModelAttribute("complain") @Valid Complain complain,MultipartFile file,BindingResult result) throws IllegalStateException, IOException {
+			System.out.println(1123213);
+		if(!StringUtil.isHttpUrl(complain.getSrcUrl())) {
+			result.rejectValue("srcUrl", "", "不是合法的url地址");
+			System.out.println(2);
+		}
+
+		if(result.hasErrors()) {
+			System.out.println(3);
+			return "user/article/complain";
+		}
+
+		User loginUser  =  (User)request.getSession().getAttribute(CmsContent.User_Key);
+
+		String picUrl = this.processFile(file);
+		complain.setPicture(picUrl);
+
+		//投诉人
+
+		if(loginUser!=null) {
+			complain.setUserId(loginUser.getId());
+		}else {
+			complain.setUserId(0);
+		}
+			
+			
+		
+		channelService.addComplian(complain);
+		return "redirect:/channel/details.do?id="+complain.getArticleId();
+
+				
+
 	}
 }
  

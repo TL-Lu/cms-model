@@ -106,7 +106,7 @@
 						  <div class="card-body">
 								    <h5 class="card-title">个人中心</h5>						<!-- 前往个人中心 -->
 								    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-								    <a href="${user.userName==null?'javascript:alert(\'请登录\')':'/user/getAUser.do?userName=${user.userName }' }"  class="btn btn-primary">Let's Go</a>
+								    <a  href="#" onclick="loca()" class="btn btn-primary">Let's Go</a>
 								  </div>
 						</div>
 						<div class="card div-inline wh" style="width: 18rem;;">
@@ -288,6 +288,14 @@ function getHot(){
  			alert("您不是管理员")
  		}else{
  			location = '/user/goRootHome.do?id='+'${user.id}';
+ 		}
+ 	}
+ 	function loca(){
+ 		var userName='${user.userName}'
+ 		if(userName==null){
+ 			alert("请登录")
+ 		}else{
+ 			location = '/user/getAUser.do?userName='+userName;
  		}
  	}
 </script>

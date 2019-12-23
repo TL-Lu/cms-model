@@ -2,6 +2,8 @@ package com.lutenglong.service.imp;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +12,7 @@ import com.github.pagehelper.PageInfo;
 import com.lutenglong.bean.Article;
 import com.lutenglong.bean.Category;
 import com.lutenglong.bean.Comment;
+import com.lutenglong.bean.Complain;
 import com.lutenglong.bean.Picture;
 import com.lutenglong.bean.User;
 import com.lutenglong.mapper.ChannelMapper;
@@ -27,9 +30,9 @@ public class ChannelServiceImp implements ChannelService {
 		}
 
 		@Override
-		public List<Article> getArticles(String id) {
+		public List<Article> getArticles(String status) {
 			// TODO Auto-generated method stub
-			return channelMapper.getArticles(id);
+			return channelMapper.getArticles(status);
 		}
 
 		@Override
@@ -39,9 +42,9 @@ public class ChannelServiceImp implements ChannelService {
 		}
 
 		@Override
-		public List<Article> getArticleOfUser(String id) {
+		public List<Article> getArticleOfUser(String id,String status) {
 			// TODO Auto-generated method stub
-			return channelMapper.getArticleOfUser(id);
+			return channelMapper.getArticleOfUser(id,status);
 		}
 
 		@Override
@@ -157,5 +160,23 @@ public class ChannelServiceImp implements ChannelService {
 				e.printStackTrace();
 				return false;
 			}
+		}
+
+		@Override
+		public List<Article> findAllArticle(String status) {
+			// TODO Auto-generated method stub
+			return channelMapper.findAllArticle(status);
+		}
+
+		@Override
+		public void addComplian(@Valid Complain complain) {
+			
+			//添加投诉到数据库
+			int result = channelMapper.addCoplain(complain);
+			// 增加投诉的数量
+			if(result>0)
+				channelMapper.increaseComplainCnt(complain.getArticleId());
+			
+
 		}
 }

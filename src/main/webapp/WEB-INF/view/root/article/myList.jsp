@@ -4,6 +4,19 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <form action="/channel/">
 	<table class="table">
+				  <thead>
+			    <tr>
+				      <th scope="col">
+				      							<select class="custom-select mr-sm-2" id="sel" >
+				      									<option value="-1"  ${status==-1?'selested':'' }>请选择</option>
+				      									<option value="0"  ${status==0?'selested':'' }>待审核</option>
+				      									<option value="1"  ${status==1?'selected':'' }>审核通过</option>
+				      									<option value="2"  ${status==2?'selected':'' }>审核被拒</option>
+				      							</select>
+				      </th>
+				      <th><button type="button" class="btn btn-outline-info" onclick="sele()">查询</button></th>
+			    </tr>
+		  </thead>
 		  <thead>
 			    <tr>
 				      <th scope="col">文章编号</th>
@@ -42,7 +55,7 @@
 				      <td>
 				      <button type="button" class="btn btn-danger" onclick="del(${article.id })">删除</button>
 				      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong" onclick="check('${article.id}')">审核</button>
-					<button type="button" class="btn btn-primary btn-info"  data-toggle="modal" data-target="#exampleModal" onclick="getArticleOfHot('${article.id}')">热门</button>
+						<button type="button" class="btn btn-primary btn-info"  data-toggle="modal" data-target="#exampleModal" onclick="getArticleOfHot('${article.id}')">热门</button>
 				      </td>
 			    </tr>
 			   </c:forEach>
@@ -122,6 +135,32 @@
 </div>
 
 
+<!--投诉模态框  -->
+<div class="modal fade"   id="articleContent" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document" style="margin-left:100px;">
+    <div class="modal-content" style="width:1200px;" >
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">文章审核</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body ">
+         	<div class="row" id="divTitle"></div>
+         	<div class="row" id="divOptions" ></div>
+         	<div class="row" id="divContent"></div>		
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary" onclick="setStatus(1)">审核通过</button>
+        <button type="button" class="btn btn-primary" onclick="setStatus(2)">审核拒绝</button>
+     	 <button type="button" class="btn btn-primary" onclick="setHot(1)">设置热门</button>
+        <button type="button" class="btn btn-primary" onclick="setHot(0)">取消热门</button>
+      </div>
+    </div>
+  </div>
+</div>	
+
 <script>
 
 $('#exampleModalLong').on('hidden.bs.modal', function (e) {
@@ -135,8 +174,15 @@ $('#exampleModal').on('hidden.bs.modal', function (e) {
 
 	var articleId="";
 	function page(currentPage){
-			$("#content").load("/channel/findAllArticle.do?currentPage="+currentPage)
+			var status=$("#sel").val()
+			$("#content").load("/channel/findAllArticle.do?currentPage="+currentPage+"&status="+status)
 	}
+	function sele(){
+		var status=$("#sel").val()
+			$("#content").load("/channel/findAllArticle.do?status="+status);
+		
+	}
+	
 	function check(id){
 			$.post("/channel/getArticle.do",{id:id},function(result){
 				if(result.core==1){

@@ -17,8 +17,8 @@
 <link href="<%=path%>/webResources/bootstrap-4.3.1-dist/css/bootstrap.css"  rel="stylesheet">
 <script type="text/javascript" src="<%=path %>/webResources/bootstrap-4.3.1-dist/js/bootstrap.js"></script>
 <script type="text/javascript" src="<%=path %>/webResources/validate/jquery.validate.js"></script>
-</head><body>
-
+</head>
+<body>
 	
 	<nav class="navbar navbar-expand-lg navbar-light bg-light navbar navbar-dark bg-dark" style=" position:sticky; position:-webkit-sticky;top:0px;z-index: 999;hight: 70px">		
 		  	<a class="navbar-brand" href="#">首页</a>
@@ -79,7 +79,7 @@
 			分类：${article.category.name}&nbsp;&nbsp;&nbsp;
 			发表时间：<fmt:formatDate value="${article.created}" pattern="yyyy-MM-dd"/> 
 			</h5>
-			
+			<a href="/channel/complain.do?id=${article.id }" style="margin-left: 20px;">投诉</a>
 		</div>
 		<div style="margin-top:30px">
 			${article.content}

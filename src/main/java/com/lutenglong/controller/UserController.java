@@ -7,7 +7,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,7 +117,8 @@ public class UserController {
 	 */
 	
 	@RequestMapping("login.do")
-	public String login(Model m,User user,HttpServletRequest request) {
+	public String login(Model m,User user,HttpServletRequest request,HttpServletResponse response) {
+		String pwd1= user.getPassWord();
 		User user2 = userService.findAUser(user);
 		request.getSession().setAttribute(CmsContent.User_Key,user2);
 		if(user2!=null) {
@@ -123,6 +126,18 @@ public class UserController {
 				List<Channel> list = userService.getChannels();
 				m.addAttribute("user", user2);
 				m.addAttribute("list", list);
+				
+				Cookie userName = new Cookie("userName", user.getUserName());
+				userName.setMaxAge(600);
+				userName.setPath("/");
+				response.addCookie(userName);
+				
+			
+				Cookie pwd = new Cookie("pwd", pwd1);
+				pwd.setMaxAge(600);
+				pwd.setPath("/");
+				response.addCookie(pwd);
+				
 				return "redirect:/channel/goHome.do?id="+user2.getId();
 			}else {
 				List<Channel> list = userService.getChannels();

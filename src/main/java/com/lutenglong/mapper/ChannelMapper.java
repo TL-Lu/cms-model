@@ -2,6 +2,8 @@ package com.lutenglong.mapper;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.One;
@@ -15,6 +17,7 @@ import com.lutenglong.bean.Article;
 import com.lutenglong.bean.Category;
 import com.lutenglong.bean.Channel;
 import com.lutenglong.bean.Comment;
+import com.lutenglong.bean.Complain;
 import com.lutenglong.bean.Picture;
 import com.lutenglong.bean.User;
 
@@ -50,8 +53,11 @@ public interface ChannelMapper {
 		@Result(property = "channel",column = "channel_id",one =@One(select = "com.lutenglong.mapper.ChannelMapper.findAChannel")),
 		@Result(property = "user",column = "user_id",one =@One(select = "com.lutenglong.mapper.ChannelMapper.findAUser"))
 	})
-	@Select("SELECT * FROM cms_article WHERE user_id=#{id} and deleted ='0' ORDER BY hits DESC ")
-	List<Article> getArticleOfUser(String id);
+	@Select("<script>SELECT * FROM cms_article WHERE user_id=#{id} and deleted ='0'  "
+			+ "<if test=\"status!=null and status!='' and status!=-1\">and status=#{status}</if>"
+			+ "ORDER BY hits DESC"
+			+ "</script>")
+	List<Article> getArticleOfUser(@Param("id")String id,@Param("status")String status);
 
 	@Select("select  id,username,password passWord,nickname nickName,birthday,CONCAT(gender),locked,create_time createTime,update_time updateTime,url,score,role from cms_user where id=${value}")
 	User findUserOfHome(String id);
@@ -144,4 +150,26 @@ public interface ChannelMapper {
 
 	@Insert("INSERT INTO cms_comment VALUES(NULL,#{article.id},#{user.id},#{content},now())")
 	boolean addComment(Comment comment);
+
+	@Results({
+		@Result(id = true,column = "id",property = "id"),
+		@Result(property = "category",column = "category_id",one =@One(select = "com.lutenglong.mapper.ChannelMapper.findACategory")),
+		@Result(property = "channel",column = "channel_id",one =@One(select = "com.lutenglong.mapper.ChannelMapper.findAChannel")),
+		@Result(property = "user",column = "user_id",one =@One(select = "com.lutenglong.mapper.ChannelMapper.findAUser"))
+	})
+	@Select("<script>SELECT * FROM cms_article WHERE 1=1"
+			+ "<if test=\"status!=null and status!='' and status!=-1\"> and status=#{status}</if>"
+			+ "ORDER BY hits DESC"
+			+ "</script>")
+	List<Article> findAllArticle(@Param("status")String status);
+
+	@Insert("INSERT INTO cms_complain(article_id,user_id,complain_type,"
+			+ "compain_option,src_url,picture,content,email,mobile,created)"
+			+ "   VALUES(#{articleId},#{userId},"
+			+ "#{complainType},#{compainOption},#{srcUrl},#{picture},#{content},#{email},#{mobile},now())")
+	int addCoplain(@Valid Complain complain);
+
+	@Update("UPDATE cms_article SET complainCnt=complainCnt+1,status=if(complainCnt>10,2,status)  "
+			+ " WHERE id=#{value}")
+	void increaseComplainCnt(Integer articleId);
 }

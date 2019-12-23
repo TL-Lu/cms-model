@@ -18,9 +18,9 @@ public class User implements Serializable {
 	
 		private Integer id;
 		@NotBlank
-		private String userName;
+		private String userName=null;
 		@NotBlank
-		private String passWord;
+		private String passWord=null;
 		private	String nickName;
 		
 		@DateTimeFormat(pattern = "yyyy-MM-dd")

@@ -2,8 +2,21 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core"  prefix="c" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<form action="/channel/">
+<form>
 	<table class="table">
+			  <thead>
+			    <tr>
+				      <th scope="col">
+				      							<select class="custom-select mr-sm-2" id="sel" >
+				      									<option value="-1"  ${status==-1?'selested':'' }>请选择</option>
+				      									<option value="0"  ${status==0?'selested':'' }>待审核</option>
+				      									<option value="1"  ${status==1?'selected':'' }>审核通过</option>
+				      									<option value="2"  ${status==2?'selected':'' }>审核被拒</option>
+				      							</select>
+				      </th>
+				      <th><button type="button" class="btn btn-outline-info" onclick="sele()">查询</button></th>
+			    </tr>
+		  </thead>
 		  <thead>
 			    <tr>
 				      <th scope="col">文章编号</th>
@@ -73,6 +86,12 @@
 
 <script>
 	function page(currentPage){
-			$("#content").load("/channel/getArticleOfUser.do?currentPage="+currentPage+"&id=${userId}")
+			var status=$("#sel").val()
+			$("#content").load("/channel/getArticleOfUser.do?currentPage="+currentPage+"&id=${userId}&status="+status);
+	}
+	function sele(){
+		var status=$("#sel").val()
+			$("#content").load("/channel/getArticleOfUser.do?id=${userId}&status="+status);
+		
 	}
 </script>
