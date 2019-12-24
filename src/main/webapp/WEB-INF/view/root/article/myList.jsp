@@ -56,7 +56,7 @@
 				      <button type="button" class="btn btn-danger" onclick="del(${article.id })">删除</button>
 				      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong" onclick="check('${article.id}')">审核</button>
 					  <button type="button" class="btn btn-primary btn-info"  data-toggle="modal" data-target="#exampleModal" onclick="getArticleOfHot('${article.id}')">热门</button>
-					  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#a">投诉管理</button>
+					 <!--  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#a"></button> -->
 				      </td>
 			    </tr>
 			   </c:forEach>
