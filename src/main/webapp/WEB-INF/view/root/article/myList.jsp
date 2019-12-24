@@ -55,7 +55,8 @@
 				      <td>
 				      <button type="button" class="btn btn-danger" onclick="del(${article.id })">删除</button>
 				      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong" onclick="check('${article.id}')">审核</button>
-						<button type="button" class="btn btn-primary btn-info"  data-toggle="modal" data-target="#exampleModal" onclick="getArticleOfHot('${article.id}')">热门</button>
+					  <button type="button" class="btn btn-primary btn-info"  data-toggle="modal" data-target="#exampleModal" onclick="getArticleOfHot('${article.id}')">热门</button>
+					  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#a">投诉管理</button>
 				      </td>
 			    </tr>
 			   </c:forEach>
@@ -135,31 +136,33 @@
 </div>
 
 
-<!--投诉模态框  -->
-<div class="modal fade"   id="articleContent" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-  <div class="modal-dialog" role="document" style="margin-left:100px;">
-    <div class="modal-content" style="width:1200px;" >
+<!-- 投诉模态框 -->
+<div class="modal fade" id="a" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document" >
+    <div class="modal-content" style="width: 1200px;margin-left: -300px;">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">文章审核</h5>
+        <h6 class="modal-title" id="title" >投诉</h6>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body ">
-         	<div class="row" id="divTitle"></div>
-         	<div class="row" id="divOptions" ></div>
-         	<div class="row" id="divContent"></div>		
+      <div class="modal-body" id="articleContent">
+      	<div id="title2"></div>
+      	<div id="contentBody" style="margin-top: 30px;">
+      		
+      	</div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-        <button type="button" class="btn btn-primary" onclick="setStatus(1)">审核通过</button>
-        <button type="button" class="btn btn-primary" onclick="setStatus(2)">审核拒绝</button>
-     	 <button type="button" class="btn btn-primary" onclick="setHot(1)">设置热门</button>
-        <button type="button" class="btn btn-primary" onclick="setHot(0)">取消热门</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		<button type="button" class="btn btn-success" onclick="setStatus(1)">通过</button>
+ 		 <button type="button" class="btn btn-danger" onclick="setStatus(2)">拒绝</button>
       </div>
     </div>
   </div>
-</div>	
+</div>
+
+
+
 
 <script>
 
