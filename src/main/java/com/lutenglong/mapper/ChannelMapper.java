@@ -44,6 +44,12 @@ public interface ChannelMapper {
 	@Select("select * from cms_category where id=#{id}")
 	Category findACategory(int id);
 
+	@Results({
+		@Result(id = true,column = "id",property = "id"),
+		@Result(property = "category",column = "category_id",one =@One(select = "com.lutenglong.mapper.ChannelMapper.findACategory")),
+		@Result(property = "channel",column = "channel_id",one =@One(select = "com.lutenglong.mapper.ChannelMapper.findAChannel")),
+		@Result(property = "user",column = "user_id",one =@One(select = "com.lutenglong.mapper.ChannelMapper.findAUser"))
+	})
 	@Select("	SELECT * FROM cms_article WHERE category_id=#{id} and deleted='0' ORDER BY hits DESC ")
 	List<Article> getArticleOfCategory(String id);
 

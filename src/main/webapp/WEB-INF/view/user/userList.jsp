@@ -292,7 +292,7 @@ function getHot(){
  	}
  	function loca(){
  		var userName='${user.userName}'
- 		if(userName==null){
+ 		if(userName==null||userName==''){
  			alert("请登录")
  		}else{
  			location = '/user/getAUser.do?userName='+userName;

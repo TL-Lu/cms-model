@@ -102,8 +102,22 @@ public class UserController {
 	
 	
 	@RequestMapping("logout.do")
-	public String logout(Model m,HttpServletRequest request) {
+	public String logout(Model m,HttpServletRequest request,HttpServletResponse response) {
 		request.getSession().removeAttribute(CmsContent.User_Key);
+		Cookie[] cookies = request.getCookies();
+		
+		Cookie userName = new Cookie("userName", "");
+		userName.setPath("/");
+		userName.setMaxAge(0);
+		response.addCookie(userName);
+		
+		Cookie pwd = new Cookie("pwd", "");
+		pwd.setPath("/");
+		pwd.setMaxAge(0);
+		response.addCookie(pwd);
+		
+		
+		
 		return "redirect:/channel/goHome.do";
 	}
 	

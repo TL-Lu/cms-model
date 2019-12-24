@@ -36,9 +36,9 @@ public class UserInterceptor implements HandlerInterceptor {
 			}
 			
 			if(null==user2.getUserName() || null== user2.getPassWord()) {
-				response.sendRedirect("/user/toLogin.do");
+				/* response.sendRedirect("/user/toLogin.do"); */
 				//request.getRequestDispatcher("/user/login").forward(request, response);
-				return false;
+				return true;
 			}
 			
 			User findAUser = userService.findAUser(user2);
@@ -47,6 +47,7 @@ public class UserInterceptor implements HandlerInterceptor {
 				return true;
 			}
 			
+			/* response.sendRedirect("/user/toLogin.do"); */
 			return true;
 		}
 	}
