@@ -221,7 +221,7 @@ public class ChannelController  extends BaseController{
 	public Object findAllArticle(Model m,@RequestParam(defaultValue = "1")Integer currentPage,String status) {
 		PageHelper.startPage(currentPage,8);
 		List<Article> articles = channelService.findAllArticle(status);
-		PageInfo<Article> page = new PageInfo<Article>(articles);
+		PageInfo<Article> page = new PageInfo<Article>(articles);//
 		m.addAttribute("articles", articles);
 		m.addAttribute("page", page);
 		m.addAttribute("status", status);
