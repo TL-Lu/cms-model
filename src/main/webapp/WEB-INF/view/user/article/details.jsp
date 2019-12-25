@@ -79,7 +79,7 @@
 			分类：${article.category.name}&nbsp;&nbsp;&nbsp;
 			发表时间：<fmt:formatDate value="${article.created}" pattern="yyyy-MM-dd"/> 
 			</h5>
-			<a href="/channel/complain.do?id=${article.id }" style="margin-left: 20px;">投诉</a>
+<%-- 			<a href="/channel/complain.do?id=${article.id }" style="margin-left: 20px;">投诉</a> --%>
 		</div>
 		<div style="margin-top:30px">
 			${article.content}
