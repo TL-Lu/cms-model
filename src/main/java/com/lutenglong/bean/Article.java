@@ -5,6 +5,7 @@ import java.util.Date;
 import org.springframework.format.annotation.DateTimeFormat;
 
 public class Article {
+
 	private Integer id;
 	private String title;
 	private String content;
@@ -24,6 +25,8 @@ public class Article {
 	private User user;
 	private Channel channel;
 	private Category category;
+
+	
 	public Article() {
 		super();
 		// TODO Auto-generated constructor stub

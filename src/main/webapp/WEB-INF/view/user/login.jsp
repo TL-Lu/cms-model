@@ -87,6 +87,7 @@
 							    		<form:password path="passWord" cssClass="form-control"  style="width:200px"  placeholder="Password" aria-label="passWord" aria-describedby="basic-addon1"/>
 											<span style="margin-left: 0px;">${err }</span>
 							    </div>
+							    	<input type="checkbox" name="status" value="on" >自动登录
 							    	<form:button class="btn btn-dark "  style="margin-left: 63px;margin-top: 30px">Login</form:button>
 	  						</form:form>
 	  				</div>

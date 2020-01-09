@@ -7,6 +7,7 @@ package com.lutenglong.commen;
  */
 public class FileResult {
 	
+	
 	public FileResult(int error, String url) {
 		super();
 		this.error = error;

@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -49,6 +50,9 @@ public class ChannelController  extends BaseController{
 	ChannelService channelService;
 	@Autowired
 	UserService userService;
+	@Autowired
+	RedisTemplate template;
+	
 	
 	public static String picture;
 	
@@ -152,8 +156,8 @@ public class ChannelController  extends BaseController{
 			User user =channelService.findUserOfHome(id);
 			m.addAttribute("user", user);
 		}
-		List<Article> articles=channelService.getNewArticle();
 		
+		List<Article> articles=channelService.getNewArticle();
 		m.addAttribute("newArticles", articles);
 		m.addAttribute("list", list);
 		

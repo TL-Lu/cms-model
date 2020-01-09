@@ -18,13 +18,14 @@ public class UserInterceptor implements HandlerInterceptor {
 	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)throws Exception {
-
+		
 		User user =(User) request.getSession().getAttribute(CmsContent.User_Key);
+		
 		if(user!=null) {
 			return true;
 		}else {
-			User user2 = new User();
 			
+			User user2 = new User();
 			Cookie[] cookies = request.getCookies();
 			for (Cookie cookie : cookies) {
 				if(cookie.getName().equals("userName")) {
@@ -34,21 +35,44 @@ public class UserInterceptor implements HandlerInterceptor {
 					user2.setPassWord(cookie.getValue());
 				}
 			}
-			
-			if(null==user2.getUserName() || null== user2.getPassWord()) {
-				/* response.sendRedirect("/user/toLogin.do"); */
-				//request.getRequestDispatcher("/user/login").forward(request, response);
-				return true;
+			if(user2.getUserName()!=null&&!"".equals(user2.getUserName())) {
+				 response.sendRedirect("/user/login.do?userName="+user2.getUserName()+"&passWord="+user2.getPassWord());
 			}
-			
-			User findAUser = userService.findAUser(user2);
-			if(findAUser!=null) {
-				request.setAttribute("user", findAUser);
-				return true;
-			}
-			
-			/* response.sendRedirect("/user/toLogin.do"); */
-			return true;
+		    response.sendRedirect("/user/toLogin.do");
+			return false;
 		}
+		
+		
+//		if(user!=null) {
+//			return true;
+//		}else {
+//			User user2 = new User();
+//			
+//			Cookie[] cookies = request.getCookies();
+//			for (Cookie cookie : cookies) {
+//				if(cookie.getName().equals("userName")) {
+//					user2.setUserName(cookie.getValue());
+//				}
+//				if(cookie.getName().equals("pwd")) {
+//					user2.setPassWord(cookie.getValue());
+//				}
+//			}
+//			
+//			if(null==user2.getUserName() || null== user2.getPassWord()) {
+//				/* response.sendRedirect("/user/toLogin.do"); */
+//				//request.getRequestDispatcher("/user/login").forward(request, response);
+//				return true;
+//			}
+//			
+//			User findAUser = userService.findAUser(user2);
+//			if(findAUser!=null) {
+//				request.setAttribute("user", findAUser);
+//				return true;
+//			}
+//			
+//			/* response.sendRedirect("/user/toLogin.do"); */
+//			return true;
+//		}
+//	}
 	}
 }

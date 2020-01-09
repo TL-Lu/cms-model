@@ -141,16 +141,18 @@ public class UserController {
 				m.addAttribute("user", user2);
 				m.addAttribute("list", list);
 				
-				Cookie userName = new Cookie("userName", user.getUserName());
-				userName.setMaxAge(600);
-				userName.setPath("/");
-				response.addCookie(userName);
+				if(user.getStatus()!=null&&!"".equals(user.getStatus())) {
+					Cookie userName = new Cookie("userName", user.getUserName());
+					userName.setMaxAge(600);
+					userName.setPath("/");
+					response.addCookie(userName);
+					
 				
-			
-				Cookie pwd = new Cookie("pwd", pwd1);
-				pwd.setMaxAge(600);
-				pwd.setPath("/");
-				response.addCookie(pwd);
+					Cookie pwd = new Cookie("pwd", pwd1);
+					pwd.setMaxAge(600);
+					pwd.setPath("/");
+					response.addCookie(pwd);
+				}
 				
 				return "redirect:/channel/goHome.do?id="+user2.getId();
 			}else {
